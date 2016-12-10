@@ -1,10 +1,11 @@
 <template>
-  <div id="watchfaces" class="container">
+  <div class="container">
     <div class="row">
-      <div class="col-sm-10 offset-sm-1 main-content">
+      <div class="col-xs-9 offset-xs-2">
         <div class="row top-nav">
+          <p class="current-page float-xs-right">{{ currentPage }}</p>
           <p class="main-title">pebble libre</p>
-          <div v-on:click="switchPage('watchfaces')" class="col-sm-4 nav-link">
+          <div v-on:click="switchPage('watchfaces')" class="col-xs-4 nav-link">
             <p class="text-xs-center" v-bind:class="{ active: showWatchfaces }">
               <svg class="svg-icon" viewBox="0 0 100 100">
                 <path d="M50,10.1c22.1,0,39.9,17.9,39.9,39.9c0,22.1-17.9,39.9-39.9,39.9S10.1,72.1,10.1,50
@@ -16,7 +17,7 @@
             </p>
           </div>
 
-          <div v-on:click="switchPage('apps')" class="col-sm-4 nav-link">
+          <div v-on:click="switchPage('apps')" class="col-xs-4 nav-link">
             <p class="text-xs-center" v-bind:class="{ active: showApps }">
               <svg class="svg-icon" viewBox="0 0 100 100">
                 <path d="M90.6,9.4V73H27V9.4H90.6 M90.6,0H27c-5.2,0-9.4,4.2-9.4,9.4V73c0,5.2,4.2,9.4,9.4,9.4h63.7
@@ -24,11 +25,11 @@
                 </path>
                 <path d="M82,90.6H9.4V18H0v72.6c0,5.2,4.2,9.4,9.4,9.4H82V90.6z"></path>
               </svg>
-              <span>Apps/Timeline</span>
+              <span>Apps / Timeline</span>
             </p>
           </div>
 
-          <div v-on:click="switchPage('search')" class="col-sm-4 nav-link">
+          <div v-on:click="switchPage('search')" class="col-xs-4 nav-link">
             <p class="text-xs-center" v-bind:class="{ active: showSearch }">
               <svg class="svg-icon" viewBox="0 0 100 100">
                 <path d="M99.2,93.8L60.1,54.7c4.8-5.8,7.7-13.2,7.7-21.3C67.8,14.9,52.8,0,34.4,0C15.9,0,1,14.9,1,33.4
@@ -40,18 +41,19 @@
             </p>
           </div>
         </div>
-
-        <watchfaces v-show="showWatchfaces" class="sub-page"></watchfaces>
-        <apps v-show="showApps" class="sub-page"></apps>
-        <search v-show="showSearch" class="sub-page"></search>
       </div>
+
+      <watchfaces v-show="showWatchfaces"></watchfaces>
+      <apps v-show="showApps"></apps>
+      <search v-show="showSearch"></search>
+    </div>
   </div>
 </template>
 
 <script>
-  import Watchfaces from './pages/Watchfaces'
-  import Apps from './pages/Apps'
-  import Search from './pages/Search'
+  import Watchfaces from './Watchfaces'
+  import Apps from './Apps'
+  import Search from './Search'
 
   export default {
     name: 'home',
@@ -62,6 +64,7 @@
     },
     data () {
       return {
+        currentPage: 'Watchfaces',
         showWatchfaces: true,
         showApps: false,
         showSearch: false
@@ -72,16 +75,19 @@
       switchPage (pageName) {
         switch (pageName) {
           case 'watchfaces':
+            this.currentPage = 'Watchfaces'
             this.showWatchfaces = true
             this.showApps = false
             this.showSearch = false
             break
           case 'apps':
+            this.currentPage = 'Apps / Timeline'
             this.showWatchfaces = false
             this.showApps = true
             this.showSearch = false
             break
           case 'search':
+            this.currentPage = 'Search'
             this.showWatchfaces = false
             this.showApps = false
             this.showSearch = true
@@ -93,6 +99,10 @@
 </script>
 
 <style lang="scss" scoped>
+  $pebbleMedGrey: #484848;
+  $pebbleOrange: #ff4700;
+  $pebbleWhite: #F4F3F4;
+
   .svg-icon {
     font-size: 1em;
     height: 17px;
@@ -101,25 +111,23 @@
     fill: #FFF;
   }
 
-  $pebbleMedGrey: #484848;
-
-  #watchfaces {
-    margin-top: 2rem;
-  }
-
-  .main-content {
-    background-color: #F4F3F4;
+  .container {
+    margin: 2rem 0 2rem 0;
+    padding: 0;
     border-radius: 10px;
-
-    .sub-page {
-      margin-top: 1rem;
-    }
 
     .main-title {
       color: #fff;
       padding: 1rem 0 0 1rem;
       font-size: 2rem;
       font-family: 'CenturyGothic',sans-serif !important;
+    }
+
+    .current-page {
+      text-align: right;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      margin: 1.6rem 2rem 0 0;
     }
 
     .top-nav {
@@ -134,7 +142,7 @@
       p {
         margin-bottom: 10px;
         &.active {
-          border-bottom: 3px solid #ff4700;
+          border-bottom: 3px solid $pebbleOrange;
         }
       }
     }
